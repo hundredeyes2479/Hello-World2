@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Lottery Scratch-Off</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .ticket {
+      display: inline-block;
+      background: url('ticket-background.jpg') no-repeat center/cover;
+      width: 300px;
+      height: 150px;
+      position: relative;
+      margin: 20px;
+    }
+    .scratch-area {
+      background: #cccccc;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      z-index: 1;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <h1>Digital Lottery Scratch-Off</h1>
+  <div class="ticket" id="ticket">
+    <div class="scratch-area" id="scratchArea"></div>
+    <div id="prize" style="display:none;">You Won $100!</div>
+  </div>
+  <p id="result"></p>
+
+  <script>
+    const scratchArea = document.getElementById('scratchArea');
+    const prize = document.getElementById('prize');
+    const result = document.getElementById('result');
+
+    // Simple scratch-off simulation
+    let scratched = false;
+
+    scratchArea.addEventListener('click', () => {
+      if (!scratched) {
+        scratched = true;
+        scratchArea.style.display = 'none';
+        prize.style.display = 'block';
+
+        // Simulate API call to verify win
+        fetch('/api/check-ticket')
+          .then(response => response.json())
+          .then(data => {
+            result.textContent = data.message;
+          })
+          .catch(err => {
+            result.textContent = 'Error checking ticket.';
+          });
+      }
+    });
+  </script>
+</body>
+</html>
